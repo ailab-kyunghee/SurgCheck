@@ -159,12 +159,11 @@ function buildTable(id, spec, deltaPairs){
     data.forEach(r=>{
       h+="<tr>"+r.map((v,ci)=>{
         if(ci===0) return `<td>${v}</td>`;
-        const mx=colMax(ci); const w=mx?Math.round(Math.abs(v)/mx*100):0;
         let delta="";
         const dp=deltaPairs&&deltaPairs.find(p=>p.less===ci);
         if(dp){ const d=(v-r[dp.orig]); const cls=d<0?"down":"up";
           delta=`<span class="delta ${cls}">${d<0?"▼":"▲"}${Math.abs(d).toFixed(2)}</span>`; }
-        return `<td><span class="cell">${(+v).toFixed(2)}${delta}<span class="bar-cell" style="width:${w}%"></span></span></td>`;
+        return `<td><span class="cell">${(+v).toFixed(2)}${delta}</span></td>`;
       }).join("")+"</tr>";
     });
     h+="</tbody>";

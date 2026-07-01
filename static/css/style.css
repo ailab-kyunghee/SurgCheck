@@ -191,7 +191,6 @@ sup{font-size:.62em}
 .delta{font-size:.8em;margin-left:5px;font-weight:600}
 .delta.down{color:var(--red)}
 .delta.up{color:var(--green)}
-.bar-cell{display:block;height:4px;border-radius:2px;background:var(--teal);opacity:.35;margin-top:5px}
 
 /* CHARTS */
 .chart-block{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-bottom:28px}
