@@ -91,7 +91,7 @@ function renderExplorer(){
   $("#exp-q-orig").innerHTML=highlight(qa.orig, sl, "hl");
   $("#exp-q-less").innerHTML=highlight(qa.less, so, "hl-less");
   $("#exp-answer").textContent=qa.answer;
-  $("#exp-answer-badge").textContent="answer: "+qa.answer;
+  $("#exp-answer-badge").textContent="GT: "+qa.answer;
   // thumbs active state
   $$("#exp-thumbs img").forEach((im,i)=>im.classList.toggle("active",i===EX.frame));
 }
