@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurgCheck: Do Vision–Language Models Really Look at Images in Surgical VQA?</title>
+<meta name="description" content="SurgCheck is a diagnostic benchmark that quantifies linguistic shortcut reliance in surgical VQA through a bias-controlled paired-question design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">Surg<span>Check</span></a>
+    <div class="nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#explorer">Explorer</a>
+      <a href="#cues">Cues</a>
+      <a href="#results">Results</a>
+      <a href="#charts">Charts</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content reveal">
+    <p class="venue">IPCAI 2026 &nbsp;·&nbsp; Diagnostic Benchmark</p>
+    <h1 class="title">Do Vision–Language Models<br>Really <span class="grad">Look at Images</span> in Surgical VQA?</h1>
+    <p class="subtitle">SurgCheck &mdash; a bias-controlled benchmark that exposes how much surgical VQA performance comes from <em>linguistic shortcuts</em> rather than genuine visual understanding.</p>
+
+    <div class="authors">
+      <span>Jongmin Shin<sup>†1</sup></span>
+      <span>Ka Young Kim<sup>†2</sup></span>
+      <span>Eunki Cho<sup>2</sup></span>
+      <span>Seong Tae Kim<sup>*2</sup></span>
+      <span>Namkee Oh<sup>*1</sup></span>
+    </div>
+    <div class="affil">
+      <span><sup>1</sup> Department of Surgery, Samsung Medical Center</span>
+      <span><sup>2</sup> Kyung Hee University</span>
+    </div>
+    <div class="affil small"><sup>†</sup> Equal contribution &nbsp; <sup>*</sup> Corresponding author</div>
+
+    <div class="buttons">
+      <a class="btn" href="https://arxiv.org/abs/2605.01911" target="_blank" rel="noopener"><span>📄</span> Paper</a>
+      <a class="btn" href="https://arxiv.org/abs/2605.01911" target="_blank" rel="noopener"><span>arXiv</span></a>
+      <a class="btn primary" href="https://github.com/ailab-kyunghee/SurgCheck" target="_blank" rel="noopener"><span>💻</span> Code &amp; Data</a>
+    </div>
+  </div>
+  <div class="scroll-hint">▾</div>
+</header>
+
+<!-- KEY FINDINGS -->
+<section class="section tint">
+  <div class="container">
+    <div class="stat-grid">
+      <div class="stat reveal"><div class="num" data-count="5">0</div><div class="lbl">VLMs evaluated<br><small>3 general + 2 surgical</small></div></div>
+      <div class="stat reveal"><div class="num" data-count="29635">0</div><div class="lbl">Paired QA pairs<br><small>over 1,933 frames</small></div></div>
+      <div class="stat reveal"><div class="num" data-suffix="pt" data-count="49.7">0</div><div class="lbl">Action F1 drop<br><small>79.4 → 29.7 when names removed</small></div></div>
+      <div class="stat reveal"><div class="num" data-suffix="%" data-count="72.6">0</div><div class="lbl">Action F1 <em>without images</em><br><small>vs 79.4 with images</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABSTRACT -->
+<section id="abstract" class="section">
+  <div class="container narrow">
+    <h2 class="reveal">Abstract</h2>
+    <p class="reveal">Vision–language models (VLMs) show promising performance in surgical visual question answering (VQA). However, existing surgical VQA datasets often contain <strong>linguistic shortcuts</strong>, where question phrasing implicitly constrains the answer space. In safety-critical surgical settings, it remains unclear whether reported performance reflects visual understanding or reliance on such shortcuts.</p>
+    <p class="reveal">We introduce <strong>SurgCheck</strong>, a diagnostic benchmark for quantifying linguistic shortcut reliance. Each surgical frame is paired with an <em>original</em> question containing entity names and a <em>less-biased</em> counterpart that removes these names while preserving identical visual content and ground-truth answers. The resulting performance gap provides a diagnostic signal of shortcut reliance. To keep less-biased questions well-defined, four grounding cues are incorporated: <em>bounding box, arrow, spatial position,</em> and <em>periphrasis</em>.</p>
+    <p class="reveal">Across five VLMs we observe consistent degradation on less-biased questions despite identical visual inputs. A text-only ablation reveals minimal drops for action and target prediction &mdash; indicating these are largely driven by linguistic shortcuts rather than visual reasoning. SurgCheck shows that strong benchmark performance does not necessarily imply faithful visual understanding.</p>
+  </div>
+</section>
+
+<!-- METHOD / OVERVIEW -->
+<section id="method" class="section tint">
+  <div class="container">
+    <h2 class="reveal">How SurgCheck Works</h2>
+    <p class="lead reveal">Built on scene-graph annotations from Endoscapes-SG201, each frame produces an <em>original</em> and a <em>less-biased</em> question that differ only in linguistic bias. A VLM answers, and an LLM-as-a-Judge (GPT-5-mini) scores semantic correctness.</p>
+    <figure class="figure reveal">
+      <img src="static/images/figures/Fig1.png" alt="SurgCheck pipeline overview" loading="lazy">
+      <figcaption><strong>Figure 1.</strong> Overview of the SurgCheck dataset and evaluation pipeline: scene graph → cue generation → paired-question generation → QA &amp; LLM-based evaluation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PAIRED-QUESTION EXPLORER -->
+<section id="explorer" class="section">
+  <div class="container">
+    <h2 class="reveal">Interactive Paired-Question Explorer</h2>
+    <p class="lead reveal">Pick a real surgical frame, a grounding cue, and a task. The image and answer stay <strong>identical</strong> &mdash; only the wording changes. This is exactly the manipulation SurgCheck measures.</p>
+
+    <div class="explorer reveal">
+      <div class="exp-left">
+        <div class="exp-frame-wrap">
+          <img id="exp-img" src="" alt="surgical frame">
+          <span id="exp-answer-badge" class="answer-badge"></span>
+        </div>
+        <div class="exp-thumbs" id="exp-thumbs"></div>
+      </div>
+      <div class="exp-right">
+        <div class="control-row">
+          <label>Grounding cue</label>
+          <div class="chips" id="exp-cues"></div>
+        </div>
+        <div class="control-row">
+          <label>Task</label>
+          <div class="chips" id="exp-cats"></div>
+        </div>
+
+        <div class="qcard orig">
+          <div class="qtag">Original question <span class="hint">contains entity name</span></div>
+          <p id="exp-q-orig"></p>
+        </div>
+        <div class="arrow-down">↓ remove the name, keep the cue</div>
+        <div class="qcard less">
+          <div class="qtag">Less-biased question <span class="hint">name removed</span></div>
+          <p id="exp-q-less"></p>
+        </div>
+        <div class="answer-line">Ground-truth answer (unchanged): <strong id="exp-answer"></strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROUNDING CUES -->
+<section id="cues" class="section tint">
+  <div class="container">
+    <h2 class="reveal">Four Grounding Cues</h2>
+    <p class="lead reveal">Removing an entity name makes a question ambiguous. Grounding cues re-anchor it &mdash; ranging from explicit visual pointers to purely textual descriptions.</p>
+
+    <div class="cue-tabs reveal" id="cue-tabs"></div>
+    <div class="cue-panel reveal">
+      <div class="cue-img-wrap"><img id="cue-img" src="" alt="cue example"></div>
+      <div class="cue-info">
+        <h3 id="cue-name"></h3>
+        <p id="cue-desc"></p>
+        <div class="cue-explicit">Grounding explicitness: <span id="cue-bar"></span></div>
+        <div class="qcard orig"><div class="qtag">Original</div><p id="cue-q-orig"></p></div>
+        <div class="qcard less"><div class="qtag">Less-biased</div><p id="cue-q-less"></p></div>
+      </div>
+    </div>
+    <figure class="figure reveal collapsible">
+      <img src="static/images/figures/Fig2.png" alt="Four grounding cue types" loading="lazy">
+      <figcaption><strong>Figure 2.</strong> The four grounding cue types as shown in the paper.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- RESULTS TABLES -->
+<section id="results" class="section">
+  <div class="container">
+    <h2 class="reveal">Results &mdash; the gap is everywhere</h2>
+    <p class="lead reveal">Every model drops on less-biased questions, despite identical images and answers. Click a column header to sort.</p>
+
+    <h3 class="reveal">Table 1 &middot; Zero-shot <span class="th-sub">(LLM-as-a-Judge)</span></h3>
+    <div class="table-wrap reveal"><table id="table1" class="data-table"></table></div>
+
+    <h3 class="reveal">Table 2 &middot; Fine-tuned <span class="th-sub">(exact-match Accuracy &amp; F1)</span></h3>
+    <div class="table-wrap reveal"><table id="table2" class="data-table"></table></div>
+    <p class="note reveal">▼ red = drop on less-biased · ▲ green = gain. Bars scale within each column.</p>
+  </div>
+</section>
+
+<!-- CHARTS -->
+<section id="charts" class="section tint">
+  <div class="container">
+    <h2 class="reveal">Interactive Charts <span class="th-sub">(real extracted numbers)</span></h2>
+
+    <div class="chart-block reveal">
+      <h3>Per-category F1 &middot; Original vs Less-biased</h3>
+      <p class="lead">Action &amp; Target rely most on entity names; Anatomy-hop &amp; Triplet (spatial reasoning) stay robust.</p>
+      <div class="chart-controls" id="cat-model-btns"></div>
+      <div class="radar-holder"><canvas id="radarCat"></canvas></div>
+    </div>
+
+    <div class="chart-block reveal">
+      <h3>Per-cue F1 &middot; Original vs Less-biased</h3>
+      <p class="lead">Explicit visual cues (arrow, box) drop the most; periphrasis (contextual phrasing) is the most robust.</p>
+      <div class="chart-controls" id="cue-model-btns"></div>
+      <div class="radar-holder"><canvas id="radarCue"></canvas></div>
+    </div>
+
+    <div class="chart-block reveal">
+      <h3>Text-only ablation <span class="th-sub">(fine-tuned LLaVA-OV-1.5-8B)</span></h3>
+      <p class="lead">Remove the image entirely: Action &amp; Target barely drop &mdash; proof the model was reading text, not pixels. Anatomy-hop &amp; Triplet collapse, showing they truly need vision.</p>
+      <div class="bar-holder"><canvas id="barAbl"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALITATIVE -->
+<section class="section">
+  <div class="container">
+    <h2 class="reveal">Qualitative failure cases</h2>
+    <p class="lead reveal">A tiny wording change &mdash; "bipolar" → "tool", or dropping a hand reference &mdash; causes large accuracy drops, with the image and answer unchanged.</p>
+    <figure class="figure reveal">
+      <img src="static/images/figures/Fig6.png" alt="Qualitative failure cases" loading="lazy">
+      <figcaption><strong>Figure 6.</strong> Top-3 performance gaps for fine-tuned LLaVA-OV-1.5-8B.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- BIBTEX -->
+<section id="bibtex" class="section tint">
+  <div class="container narrow">
+    <h2 class="reveal">BibTeX</h2>
+    <div class="bibtex-wrap reveal">
+      <button id="copy-bib" class="copy-btn">Copy</button>
+      <pre id="bibtex">@inproceedings{shin2026surgcheck,
+  title     = {SurgCheck: Do Vision--Language Models Really Look at Images in Surgical VQA?},
+  author    = {Shin, Jongmin and Kim, Ka Young and Cho, Eunki and Kim, Seong Tae and Oh, Namkee},
+  booktitle = {International Conference on Information Processing in Computer-Assisted Interventions (IPCAI)},
+  year      = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>Supported by IITP (IITP-2025-RS-2023-00258649), NRF (RS-2024-00334321, RS-2024-00392495), and the "Future Medicine 2030" project of Samsung Medical Center (SMX1230771).</p>
+    <p class="small">Page built from the SurgCheck paper. Interactive charts use numbers extracted directly from model predictions.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="static/js/data.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>
