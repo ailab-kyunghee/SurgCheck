@@ -152,7 +152,12 @@ sup{font-size:.62em}
 .data-table th:first-child,.data-table td:first-child{text-align:left;font-weight:600}
 .data-table thead th{background:var(--tint);color:var(--muted);font-weight:600;font-size:.82rem;
   text-transform:uppercase;letter-spacing:.04em;cursor:pointer;user-select:none;border-bottom:2px solid var(--line);transition:color .15s}
-.data-table thead th:hover{color:var(--teal)}
+.data-table thead tr:not(.grp) th:hover{color:var(--teal)}
+.data-table thead tr.grp th{text-align:center;cursor:default;border-bottom:1px solid var(--line);
+  color:var(--ink);padding-bottom:8px}
+.data-table thead tr.grp th:empty{background:var(--tint);border-bottom:none}
+.data-table thead tr.grp th:not(:empty){border-bottom:2px solid var(--teal-l)}
+.data-table thead tr.grp th:hover{color:var(--ink)}
 .data-table thead th.sort-asc::after{content:" ▲";font-size:.7em}
 .data-table thead th.sort-desc::after{content:" ▼";font-size:.7em}
 .data-table tbody tr{border-bottom:1px solid var(--line);transition:background .15s}
@@ -171,6 +176,12 @@ sup{font-size:.62em}
 .radar-holder{max-width:480px;margin:0 auto;position:relative}
 .bar-holder{position:relative;height:360px}
 
+/* TAKEAWAYS */
+.takeaways{list-style:none;padding:0;margin:18px 0;display:grid;gap:14px}
+.takeaways li{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);
+  border-radius:12px;padding:16px 20px;box-shadow:var(--shadow)}
+.takeaways li strong{color:var(--teal-d)}
+
 /* BIBTEX */
 .bibtex-wrap{position:relative}
 .bibtex-wrap pre{background:#0f2126;color:#d7ecef;border-radius:12px;padding:22px;overflow-x:auto;font-size:.86rem;line-height:1.6}
@@ -180,6 +191,8 @@ sup{font-size:.62em}
 
 /* FOOTER */
 .footer{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;text-align:center}
+.footer-logos{margin-bottom:28px}
+.footer-logos img{width:100%;max-width:920px;height:auto;opacity:.92}
 .footer .small{font-size:.8rem;color:#9aa7ad;margin-top:8px}
 
 /* REVEAL ANIMATION */

@@ -148,7 +148,11 @@ function buildTable(id, spec, deltaPairs){
         return String(x).localeCompare(String(y))*state.dir;
       });
     }
-    let h="<thead><tr>"+cols.map((c,ci)=>{
+    let h="<thead>";
+    if(spec.groups){
+      h+="<tr class='grp'>"+spec.groups.map(g=>`<th colspan="${g.span}">${g.label}</th>`).join("")+"</tr>";
+    }
+    h+="<tr>"+cols.map((c,ci)=>{
       let cl=""; if(state.col===ci) cl=state.dir>0?"sort-asc":"sort-desc";
       return `<th class="${cl}" data-ci="${ci}">${c}</th>`;
     }).join("")+"</tr></thead><tbody>";
@@ -236,8 +240,14 @@ $("#copy-bib").onclick=function(){
 /* ---------- INIT ---------- */
 buildThumbs(); renderExplorer();
 buildCueTabs(); renderCue();
-buildTable("table1", D.table1, [{orig:1,less:2},{orig:3,less:4}]);
-buildTable("table2", D.table2, [{orig:1,less:2},{orig:3,less:4}]);
+buildTable("table1", {rows:D.table1.rows,
+  cols:["Model","Orig","Less-bias","Orig","Less-bias"],
+  groups:[{label:"",span:1},{label:"LLM-based Score",span:2},{label:"LLM-based Accuracy",span:2}]},
+  [{orig:1,less:2},{orig:3,less:4}]);
+buildTable("table2", {rows:D.table2.rows,
+  cols:["Model","Orig","Less-bias","Orig","Less-bias"],
+  groups:[{label:"",span:1},{label:"Accuracy",span:2},{label:"F1-Score",span:2}]},
+  [{orig:1,less:2},{orig:3,less:4}]);
 makeRadar("radarCat","cat-model-btns",D.radarCategory);
 makeRadar("radarCue","cue-model-btns",D.radarCue);
 makeAblation();

@@ -19,10 +19,11 @@
     <div class="nav-links">
       <a href="#abstract">Abstract</a>
       <a href="#method">Method</a>
-      <a href="#explorer">Explorer</a>
       <a href="#cues">Cues</a>
+      <a href="#explorer">Explorer</a>
       <a href="#results">Results</a>
       <a href="#charts">Charts</a>
+      <a href="#conclusion">Conclusion</a>
       <a href="#bibtex">BibTeX</a>
     </div>
   </div>
@@ -74,13 +75,39 @@
     <p class="lead reveal">Built on scene-graph annotations from Endoscapes-SG201, each frame produces an <em>original</em> and a <em>less-biased</em> question that differ only in linguistic bias. A VLM answers, and an LLM-as-a-Judge (GPT-5-mini) scores semantic correctness.</p>
     <figure class="figure reveal">
       <img src="static/images/figures/Fig1.png" alt="SurgCheck pipeline overview" loading="lazy">
-      <figcaption><strong>Figure 1.</strong> Overview of the SurgCheck dataset and evaluation pipeline: scene graph → cue generation → paired-question generation → QA &amp; LLM-based evaluation.</figcaption>
+      <figcaption><strong>Figure 1.</strong> The SurgCheck pipeline: scene graph → cues → paired questions → LLM-judged evaluation.</figcaption>
     </figure>
   </div>
 </section>
 
+<!-- GROUNDING CUES -->
+<section id="cues" class="section">
+  <div class="container">
+    <h2 class="reveal">Four Grounding Cues</h2>
+    <p class="lead reveal">Removing an entity name makes a question ambiguous. Grounding cues re-anchor it &mdash; ranging from explicit visual pointers to purely textual descriptions.</p>
+
+    <figure class="figure reveal collapsible" style="margin-bottom:40px">
+      <img src="static/images/figures/Fig2.png" alt="Four grounding cue types" loading="lazy">
+      <figcaption><strong>Figure 2.</strong> The four grounding cue types.</figcaption>
+    </figure>
+
+    <h3 class="reveal">Explore each cue</h3>
+    <div class="cue-tabs reveal" id="cue-tabs"></div>
+    <div class="cue-panel reveal">
+      <div class="cue-img-wrap"><img id="cue-img" src="" alt="cue example"></div>
+      <div class="cue-info">
+        <h3 id="cue-name"></h3>
+        <p id="cue-desc"></p>
+        <div class="cue-explicit">Grounding explicitness: <span id="cue-bar"></span></div>
+        <div class="qcard orig"><div class="qtag">Original</div><p id="cue-q-orig"></p></div>
+        <div class="qcard less"><div class="qtag">Less-biased</div><p id="cue-q-less"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PAIRED-QUESTION EXPLORER -->
-<section id="explorer" class="section">
+<section id="explorer" class="section tint">
   <div class="container">
     <h2 class="reveal">Interactive Paired-Question Explorer</h2>
     <p class="lead reveal">Pick a real surgical frame, a grounding cue, and a task. The image and answer stay <strong>identical</strong> &mdash; only the wording changes. This is exactly the manipulation SurgCheck measures.</p>
@@ -118,35 +145,11 @@
   </div>
 </section>
 
-<!-- GROUNDING CUES -->
-<section id="cues" class="section tint">
-  <div class="container">
-    <h2 class="reveal">Four Grounding Cues</h2>
-    <p class="lead reveal">Removing an entity name makes a question ambiguous. Grounding cues re-anchor it &mdash; ranging from explicit visual pointers to purely textual descriptions.</p>
-
-    <div class="cue-tabs reveal" id="cue-tabs"></div>
-    <div class="cue-panel reveal">
-      <div class="cue-img-wrap"><img id="cue-img" src="" alt="cue example"></div>
-      <div class="cue-info">
-        <h3 id="cue-name"></h3>
-        <p id="cue-desc"></p>
-        <div class="cue-explicit">Grounding explicitness: <span id="cue-bar"></span></div>
-        <div class="qcard orig"><div class="qtag">Original</div><p id="cue-q-orig"></p></div>
-        <div class="qcard less"><div class="qtag">Less-biased</div><p id="cue-q-less"></p></div>
-      </div>
-    </div>
-    <figure class="figure reveal collapsible">
-      <img src="static/images/figures/Fig2.png" alt="Four grounding cue types" loading="lazy">
-      <figcaption><strong>Figure 2.</strong> The four grounding cue types as shown in the paper.</figcaption>
-    </figure>
-  </div>
-</section>
-
 <!-- RESULTS TABLES -->
 <section id="results" class="section">
   <div class="container">
-    <h2 class="reveal">Results &mdash; the gap is everywhere</h2>
-    <p class="lead reveal">Every model drops on less-biased questions, despite identical images and answers. Click a column header to sort.</p>
+    <h2 class="reveal">Results &mdash; a consistent gap across models</h2>
+    <p class="lead reveal">After fine-tuning, every model drops on less-biased questions despite identical images and answers; the zero-shot setting shows the same trend, with PaliGemma2 as a marginal exception. Click a column header to sort.</p>
 
     <h3 class="reveal">Table 1 &middot; Zero-shot <span class="th-sub">(LLM-as-a-Judge)</span></h3>
     <div class="table-wrap reveal"><table id="table1" class="data-table"></table></div>
@@ -196,8 +199,23 @@
   </div>
 </section>
 
+<!-- CONCLUSION -->
+<section id="conclusion" class="section tint">
+  <div class="container narrow">
+    <h2 class="reveal">Conclusion</h2>
+    <p class="reveal">Surgical VQA is <strong>inherently prone to strong linguistic bias</strong>. Question phrasing &mdash; instrument names, hand references, and conventional instrument&ndash;action&ndash;target patterns &mdash; is highly correlated with the answer, so models can, and do, exploit <em>textual shortcuts</em> instead of grounding their predictions in the image.</p>
+    <p class="reveal">SurgCheck makes this reliance measurable. The paired-question gaps and the text-only ablation show it is systematic: performance stays high on original questions even when the image is removed, especially for action- and target-centric tasks. In other words, <strong>strong benchmark numbers do not guarantee faithful visual understanding.</strong></p>
+    <p class="reveal">This has a direct implication for how surgical VQA models should be built. Training and evaluation should:</p>
+    <ul class="takeaways reveal">
+      <li><strong>Verify visual grounding</strong> &mdash; explicitly check whether a model truly uses visual evidence (e.g. via bias-controlled paired questions and text-only diagnostics) rather than trusting aggregate accuracy.</li>
+      <li><strong>Prevent shortcut learning</strong> &mdash; adopt strategies such as bias-controlled data, less-biased phrasing, and grounding supervision so that models are forced to look at the image to answer.</li>
+    </ul>
+    <p class="reveal">We hope SurgCheck supports more reliable evaluation of multimodal models and encourages methods that genuinely ground predictions in visual evidence.</p>
+  </div>
+</section>
+
 <!-- BIBTEX -->
-<section id="bibtex" class="section tint">
+<section id="bibtex" class="section">
   <div class="container narrow">
     <h2 class="reveal">BibTeX</h2>
     <div class="bibtex-wrap reveal">
@@ -214,6 +232,9 @@
 
 <footer class="footer">
   <div class="container">
+    <div class="footer-logos reveal">
+      <img src="static/images/logos.png" alt="Samsung Medical Center · MIDAS Lab · Kyung Hee University · Augmented Intelligence Lab" loading="lazy">
+    </div>
     <p>Supported by IITP (IITP-2025-RS-2023-00258649), NRF (RS-2024-00334321, RS-2024-00392495), and the "Future Medicine 2030" project of Samsung Medical Center (SMX1230771).</p>
     <p class="small">Page built from the SurgCheck paper. Interactive charts use numbers extracted directly from model predictions.</p>
   </div>
