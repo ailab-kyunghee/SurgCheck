@@ -69,6 +69,10 @@ sup{font-size:.62em}
 .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .btn.primary:hover{background:var(--teal-d)}
+.btn.disabled{background:var(--tint);color:var(--muted);cursor:default;box-shadow:none;border-style:dashed}
+.btn.disabled:hover{transform:none;box-shadow:none}
+.btn .soon{font-style:normal;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--teal);background:var(--teal-l);padding:2px 8px;border-radius:999px;margin-left:2px}
 .scroll-hint{position:relative;z-index:1;text-align:center;margin-top:44px;color:var(--teal);font-size:1.4rem;animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
