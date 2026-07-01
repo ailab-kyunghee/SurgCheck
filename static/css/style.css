@@ -129,6 +129,30 @@ sup{font-size:.62em}
 .hl{background:#ffe08a;border-radius:4px;padding:0 3px;font-weight:600}
 .hl-less{background:#c7e59a;border-radius:4px;padding:0 3px;font-weight:600}
 
+/* CASE VIEWERS (failure + text-only) */
+.case-viewer{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+.case-viewer.txt{margin-top:6px}
+@media(max-width:840px){.case-viewer{grid-template-columns:1fr}}
+.case-img-wrap{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.case-img-wrap img{display:block;width:100%;height:auto;transition:filter .3s}
+.case-img-wrap img.dimmed{filter:grayscale(.7) brightness(.7) blur(1px)}
+.case-cat{position:absolute;left:12px;top:12px;background:rgba(14,124,134,.92);color:#fff;
+  padding:5px 12px;border-radius:999px;font-weight:600;font-size:.85rem;backdrop-filter:blur(4px)}
+.case-nav{display:flex;align-items:center;gap:14px;justify-content:flex-end;margin-bottom:12px;color:var(--muted);font-size:.9rem;font-weight:600}
+.navbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--teal);
+  font-size:1.2rem;line-height:1;cursor:pointer;transition:.16s}
+.navbtn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.qcard.neutral{background:var(--tint);border:1px solid var(--line)}
+.predrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;
+  border:1px solid var(--line);border-radius:10px;margin-top:10px;background:#fff}
+.predrow.inline{border:none;background:transparent;padding:8px 2px 0;margin-top:6px}
+.predrow .cond{font-size:.85rem;color:var(--muted);font-weight:500}
+.predrow .cond em{color:#9aa7ad}
+.pred{font-weight:700;font-size:1.02rem}
+.pred.ok{color:var(--green)}
+.pred.bad{color:var(--red)}
+
 /* CUE TABS */
 .cue-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
 .cue-tab{flex:1;min-width:150px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;transition:.18s;text-align:left}

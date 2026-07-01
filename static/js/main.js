@@ -229,6 +229,65 @@ function makeAblation(){
   });
 }
 
+/* ---------- verdict helper ---------- */
+function neq(a,b){ const n=s=>String(s).toLowerCase().replace(/_/g," ").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); return n(a)===n(b); }
+function verdict(pred,gt){ const good=neq(pred,gt); return `<span class="pred ${good?'ok':'bad'}">${pred} ${good?'✓':'✗'}</span>`; }
+
+/* ---------- FAILURE-CASE VIEWER ---------- */
+function initFailures(){
+  const cases=D.failureCases||[];
+  if(!cases.length) return;
+  const cats=["All",...Array.from(new Set(cases.map(c=>c.cat)))];
+  const st={cat:"All",idx:0};
+  const list=()=>st.cat==="All"?cases:cases.filter(c=>c.cat===st.cat);
+  const cw=$("#fail-cats");
+  function drawChips(){ cw.innerHTML=""; cats.forEach(c=>cw.appendChild(chip(c,c===st.cat,()=>{st.cat=c;st.idx=0;render();}))); }
+  function render(){
+    drawChips();
+    const L=list(); if(!L.length) return;
+    st.idx=(st.idx+L.length)%L.length;
+    const c=L[st.idx];
+    $("#fail-img").src=FRAMES_DIR+c.img;
+    $("#fail-gt").textContent="GT: "+c.gt;
+    const so=tokset(c.origQ), sl=tokset(c.lessQ);
+    $("#fail-origq").innerHTML=highlight(c.origQ,sl,"hl");
+    $("#fail-lessq").innerHTML=highlight(c.lessQ,so,"hl-less");
+    $("#fail-origpred").innerHTML=verdict(c.origPred,c.gt);
+    $("#fail-lesspred").innerHTML=verdict(c.lessPred,c.gt);
+    $("#fail-count").textContent=`${st.idx+1} / ${L.length}`;
+  }
+  $("#fail-prev").onclick=()=>{st.idx--;render();};
+  $("#fail-next").onclick=()=>{st.idx++;render();};
+  render();
+}
+
+/* ---------- TEXT-ONLY CASE VIEWER ---------- */
+function initTextCases(){
+  const cases=D.textOnlyCases||[];
+  if(!cases.length) return;
+  const kinds=[["shortcut","Shortcut (action / target)"],["vision","Needs vision (spatial)"]];
+  const st={kind:"shortcut",idx:0};
+  const list=()=>cases.filter(c=>c.kind===st.kind);
+  const kw=$("#txt-kind");
+  function drawChips(){ kw.innerHTML=""; kinds.forEach(([k,lbl])=>kw.appendChild(chip(lbl,k===st.kind,()=>{st.kind=k;st.idx=0;render();}))); }
+  function render(){
+    drawChips();
+    const L=list(); if(!L.length) return;
+    st.idx=(st.idx+L.length)%L.length;
+    const c=L[st.idx];
+    $("#txt-img").src=FRAMES_DIR+c.img;
+    $("#txt-cat").textContent=c.cat;
+    $("#txt-q").textContent=c.q;
+    $("#txt-imgpred").innerHTML=verdict(c.imgPred,c.gt);
+    $("#txt-textpred").innerHTML=verdict(c.textPred,c.gt);
+    $("#txt-gt").textContent=c.gt;
+    $("#txt-count").textContent=`${st.idx+1} / ${L.length}`;
+  }
+  $("#txt-prev").onclick=()=>{st.idx--;render();};
+  $("#txt-next").onclick=()=>{st.idx++;render();};
+  render();
+}
+
 /* ---------- BIBTEX COPY ---------- */
 $("#copy-bib").onclick=function(){
   navigator.clipboard.writeText($("#bibtex").textContent).then(()=>{
@@ -251,4 +310,6 @@ buildTable("table2", {rows:D.table2.rows,
 makeRadar("radarCat","cat-model-btns",D.radarCategory);
 makeRadar("radarCue","cue-model-btns",D.radarCue);
 makeAblation();
+initFailures();
+initTextCases();
 })();

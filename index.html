@@ -184,17 +184,57 @@
       <p class="lead">Remove the image entirely: Action &amp; Target barely drop &mdash; proof the model was reading text, not pixels. Anatomy-hop &amp; Triplet collapse, showing they truly need vision.</p>
       <div class="bar-holder"><canvas id="barAbl"></canvas></div>
     </div>
+
+    <div class="chart-block reveal">
+      <h3>See it on real predictions</h3>
+      <p class="lead">Actual fine-tuned LLaVA-OV-1.5-8B outputs. For action/target the model stays correct <em>even with the image removed</em> (a shortcut); spatial tasks fail without vision.</p>
+      <div class="chart-controls" id="txt-kind"></div>
+      <div class="case-viewer txt">
+        <div class="case-left">
+          <div class="case-img-wrap"><img id="txt-img" src="" alt="frame"><span id="txt-cat" class="case-cat"></span></div>
+        </div>
+        <div class="case-right">
+          <div class="case-nav"><button id="txt-prev" class="navbtn">‹</button><span id="txt-count"></span><button id="txt-next" class="navbtn">›</button></div>
+          <div class="qcard neutral"><div class="qtag">Question</div><p id="txt-q"></p></div>
+          <div class="predrow"><span class="cond">🖼️ With image</span><span id="txt-imgpred" class="predval"></span></div>
+          <div class="predrow"><span class="cond">🚫 Text-only <em>(image removed)</em></span><span id="txt-textpred" class="predval"></span></div>
+          <div class="answer-line">Ground-truth: <strong id="txt-gt"></strong></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- QUALITATIVE -->
-<section class="section">
+<!-- QUALITATIVE / FAILURE CASES -->
+<section id="failures" class="section">
   <div class="container">
-    <h2 class="reveal">Qualitative failure cases</h2>
-    <p class="lead reveal">A tiny wording change &mdash; "bipolar" → "tool", or dropping a hand reference &mdash; causes large accuracy drops, with the image and answer unchanged.</p>
-    <figure class="figure reveal">
-      <img src="static/images/figures/Fig6.png" alt="Qualitative failure cases" loading="lazy">
-      <figcaption><strong>Figure 6.</strong> Top-3 performance gaps for fine-tuned LLaVA-OV-1.5-8B.</figcaption>
+    <h2 class="reveal">Failure cases you can browse</h2>
+    <p class="lead reveal">Real fine-tuned LLaVA-OV-1.5-8B predictions. The <strong>image and answer are identical</strong> &mdash; only the wording changes, yet the prediction flips. Filter by task and step through examples.</p>
+
+    <div class="chips reveal" id="fail-cats"></div>
+    <div class="case-viewer reveal">
+      <div class="case-left">
+        <div class="case-img-wrap"><img id="fail-img" src="" alt="surgical frame"><span id="fail-gt" class="case-cat"></span></div>
+      </div>
+      <div class="case-right">
+        <div class="case-nav"><button id="fail-prev" class="navbtn">‹</button><span id="fail-count"></span><button id="fail-next" class="navbtn">›</button></div>
+        <div class="qcard orig">
+          <div class="qtag">Original question</div>
+          <p id="fail-origq"></p>
+          <div class="predrow inline"><span class="cond">prediction</span><span id="fail-origpred" class="predval"></span></div>
+        </div>
+        <div class="arrow-down">↓ same image, same answer &mdash; only wording changes</div>
+        <div class="qcard less">
+          <div class="qtag">Less-biased question</div>
+          <p id="fail-lessq"></p>
+          <div class="predrow inline"><span class="cond">prediction</span><span id="fail-lesspred" class="predval"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <figure class="figure reveal collapsible" style="margin-top:36px">
+      <img src="static/images/figures/Fig6.png" alt="Top-3 failure cases" loading="lazy">
+      <figcaption><strong>Figure 6.</strong> Top-3 performance gaps, as reported in the paper.</figcaption>
     </figure>
   </div>
 </section>
@@ -242,6 +282,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="static/js/data.js"></script>
+<script src="static/js/cases.js"></script>
 <script src="static/js/main.js"></script>
 </body>
 </html>
