@@ -24,6 +24,7 @@
       <a href="#results">Results</a>
       <a href="#charts">Charts</a>
       <a href="#conclusion">Conclusion</a>
+      <a href="#dataset">Dataset</a>
       <a href="#bibtex">BibTeX</a>
     </div>
   </div>
@@ -53,7 +54,8 @@
     <div class="buttons">
       <a class="btn primary" href="https://arxiv.org/abs/2605.01911" target="_blank" rel="noopener"><span>📄</span> Paper</a>
       <a class="btn" href="static/SurgCheck_Poster.pdf" target="_blank" rel="noopener"><span>🖼️</span> Poster</a>
-      <span class="btn disabled"><span>💻</span> Code &amp; Data <em class="soon">coming soon</em></span>
+      <a class="btn" href="#dataset"><span>📦</span> Dataset</a>
+      <span class="btn disabled"><span>💻</span> Code <em class="soon">coming soon</em></span>
     </div>
   </div>
   <div class="scroll-hint">▾</div>
@@ -252,6 +254,56 @@
       <li><strong>Prevent shortcut learning</strong> &mdash; adopt strategies such as bias-controlled data, less-biased phrasing, and grounding supervision so that models are forced to look at the image to answer.</li>
     </ul>
     <p class="reveal">We hope SurgCheck supports more reliable evaluation of multimodal models and encourages methods that genuinely ground predictions in visual evidence.</p>
+  </div>
+</section>
+
+<!-- DATASET -->
+<section id="dataset" class="section">
+  <div class="container narrow">
+    <h2 class="reveal">Dataset</h2>
+    <p class="reveal">SurgCheck ships as paired JSONL annotation files. The surgical frames themselves are <strong>not redistributed</strong> — download them from Endoscapes-SG201 and combine them with the annotations here.</p>
+
+    <h3 class="reveal">1. Get the annotations</h3>
+    <p class="reveal">Live on this repo under <a href="data/"><code>/data/</code></a>. Structure:</p>
+    <pre class="reveal" style="background:var(--tint);padding:16px 20px;border-radius:10px;overflow-x:auto;font-size:.86rem;line-height:1.55">data/
+├── full/
+│   ├── train_original.jsonl              (19,604 rows)
+│   ├── train_less_biased.jsonl           (19,604 rows)
+│   ├── test_original.jsonl               ( 3,860 rows)
+│   └── test_less_biased.jsonl            ( 3,860 rows)
+└── balanced_4cue_test/                   # Sec. 3.5 cross-cue-aligned subset
+    ├── box_{original,less_biased}.jsonl          (1,898 rows each)
+    ├── arrow_{original,less_biased}.jsonl        (1,898 rows each)
+    ├── position_{original,less_biased}.jsonl     (1,898 rows each)
+    └── periphrasis_{original,less_biased}.jsonl  (1,898 rows each)</pre>
+    <p class="reveal">Each <code>*_original.jsonl</code> and <code>*_less_biased.jsonl</code> file is paired line-by-line: line <em>i</em> shares the same image, task, cue, and ground-truth answer — only the question wording differs. Inside <code>balanced_4cue_test/</code>, the four cue files are additionally cross-cue aligned (line <em>i</em> of box / arrow / position / periphrasis points to the same (frame, category, slot)).</p>
+
+    <h3 class="reveal">2. Get the images from Endoscapes-SG201</h3>
+    <p class="reveal">Base surgical frames come from Endoscapes-SG201 (Murali et al., 2023), derived from Cholec80. Please respect the upstream license.</p>
+    <div class="buttons reveal" style="margin-top:8px">
+      <a class="btn" href="https://github.com/CAMMA-public/Endoscapes" target="_blank" rel="noopener"><span>🔗</span> Endoscapes on GitHub</a>
+      <a class="btn" href="https://arxiv.org/abs/2312.12429" target="_blank" rel="noopener"><span>📄</span> Endoscapes paper</a>
+    </div>
+    <p class="reveal" style="margin-top:14px">Each annotation row carries an <code>ori_img_tag</code> (the base frame filename in Endoscapes, e.g. <code>164_2700.jpg</code>) and an <code>image</code> field that may either point to the same base frame or to a cue-augmented variant with a red bounding box or arrow drawn on it (e.g. <code>164_2700_bbox_lt.jpg</code>, <code>164_2700_arrow_cystic_duct.jpg</code>). Cue-augmented variants are rendered from Endoscapes' scene-graph object bounding boxes — regenerate them by drawing the red box or arrow at the annotated location on the base frame.</p>
+
+    <h3 class="reveal">3. JSONL schema</h3>
+    <pre class="reveal" style="background:var(--tint);padding:16px 20px;border-radius:10px;overflow-x:auto;font-size:.86rem;line-height:1.55">{
+  "image": "164_2700_arrow_lt.jpg",
+  "conversations": [
+    {"from": "human", "value": "&lt;image&gt;\nYou are an assistant with surgical expertise. Given a surgical scene, answer the question in 1-5 words. Which tool, operated by the operator's left hand, is indicated by the red arrow?"},
+    {"from": "gpt",   "value": "grasper"}
+  ],
+  "ori_img_tag": "164_2700.jpg",
+  "main_tag":    "Visual_QA",
+  "sub_sub_tag": "Instrument",
+  "sub_tag":     "Arrow_Cue"
+}</pre>
+    <ul class="reveal" style="line-height:1.7">
+      <li><code>main_tag</code> — <code>Visual_QA</code> or <code>Reasoning_QA</code></li>
+      <li><code>sub_sub_tag</code> — task category: <code>Instrument_Count</code>, <code>anatomy</code>, <code>Instrument</code>, <code>Action</code>, <code>Target</code>, <code>Triplet</code>, <code>anatomy_hop</code>, <code>CVS</code></li>
+      <li><code>sub_tag</code> — grounding cue: <code>No_Cue</code>, <code>Box_Cue</code>, <code>Arrow_Cue</code>, <code>Position_Cue</code>, <code>Word_Cue</code></li>
+    </ul>
+    <p class="reveal">See <a href="data/README.md"><code>data/README.md</code></a> for schema details, dataset quirks, and license notes.</p>
   </div>
 </section>
 
