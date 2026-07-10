@@ -55,7 +55,6 @@
       <a class="btn primary" href="https://arxiv.org/abs/2605.01911" target="_blank" rel="noopener"><span>📄</span> Paper</a>
       <a class="btn" href="static/SurgCheck_Poster.pdf" target="_blank" rel="noopener"><span>🖼️</span> Poster</a>
       <a class="btn" href="#dataset"><span>📦</span> Dataset</a>
-      <span class="btn disabled"><span>💻</span> Code <em class="soon">coming soon</em></span>
     </div>
   </div>
   <div class="scroll-hint">▾</div>
@@ -264,7 +263,11 @@
     <p class="reveal">SurgCheck ships as paired JSONL annotation files. The surgical frames themselves are <strong>not redistributed</strong> — download them from Endoscapes-SG201 and combine them with the annotations here.</p>
 
     <h3 class="reveal">1. Get the annotations</h3>
-    <p class="reveal">Live on this repo under <a href="data/"><code>/data/</code></a>. Structure:</p>
+    <div class="buttons reveal" style="margin-bottom:14px">
+      <a class="btn primary" href="SurgCheck_annotations.zip" download><span>⬇️</span> Download annotations (.zip, 519 KB)</a>
+      <a class="btn" href="https://github.com/ailab-kyunghee/SurgCheck/tree/gh-pages/data" target="_blank" rel="noopener"><span>🗂️</span> Browse on GitHub</a>
+    </div>
+    <p class="reveal">Both options give you the same files. Structure:</p>
     <pre class="reveal" style="background:var(--tint);padding:16px 20px;border-radius:10px;overflow-x:auto;font-size:.86rem;line-height:1.55">data/
 ├── full/
 │   ├── train_original.jsonl              (19,604 rows)
